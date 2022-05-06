@@ -1,0 +1,641 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище ip126Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Aircrafts">
+          <Key>
+            <PropertyRef Name="aircraft_code" />
+          </Key>
+          <Property Name="aircraft_code" Type="int" Nullable="false" />
+          <Property Name="model" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="range" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Airports">
+          <Key>
+            <PropertyRef Name="airport_code" />
+          </Key>
+          <Property Name="airport_code" Type="int" Nullable="false" />
+          <Property Name="airport_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="city" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="coordinates" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="timezone" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Boardiang_passes">
+          <Key>
+            <PropertyRef Name="boarding_no" />
+          </Key>
+          <Property Name="ticket_no" Type="int" Nullable="false" />
+          <Property Name="flight_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="boarding_no" Type="int" Nullable="false" />
+          <Property Name="seat_no" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bookings">
+          <Key>
+            <PropertyRef Name="book_ref" />
+          </Key>
+          <Property Name="book_ref" Type="int" Nullable="false" />
+          <Property Name="book_date" Type="date" Nullable="false" />
+          <Property Name="total_amount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Flights">
+          <Key>
+            <PropertyRef Name="flight_id" />
+          </Key>
+          <Property Name="flight_id" Type="int" Nullable="false" />
+          <Property Name="flight_no" Type="int" Nullable="false" />
+          <Property Name="scheduled_departure" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="scheduled_arrival" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="departure_airport" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="arrival_airport" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="aircraft_code" Type="int" Nullable="false" />
+          <Property Name="actual_departure" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="actual_arrival" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="airport_code" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Passenger">
+          <Key>
+            <PropertyRef Name="passenger_id" />
+          </Key>
+          <Property Name="passenger_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="passenger_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="passport" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dob" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seats">
+          <Key>
+            <PropertyRef Name="seat_no" />
+          </Key>
+          <Property Name="aircraft_code" Type="int" Nullable="false" />
+          <Property Name="seat_no" Type="int" Nullable="false" />
+          <Property Name="fare_conditions" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Ticket_flights">
+          <Key>
+            <PropertyRef Name="ticket_no" />
+          </Key>
+          <Property Name="ticket_no" Type="int" Nullable="false" />
+          <Property Name="flight_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fare_conditions" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="amount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tickets">
+          <Key>
+            <PropertyRef Name="ticket_no" />
+          </Key>
+          <Property Name="ticket_no" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="book_ref" Type="int" Nullable="false" />
+          <Property Name="passenger_id" Type="int" Nullable="false" />
+          <Property Name="contact_data" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Boardiang_passes_Seats">
+          <End Role="Seats" Type="Self.Seats" Multiplicity="1" />
+          <End Role="Boardiang_passes" Type="Self.Boardiang_passes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seats">
+              <PropertyRef Name="seat_no" />
+            </Principal>
+            <Dependent Role="Boardiang_passes">
+              <PropertyRef Name="seat_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flights_Aircrafts">
+          <End Role="Aircrafts" Type="Self.Aircrafts" Multiplicity="1" />
+          <End Role="Flights" Type="Self.Flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Aircrafts">
+              <PropertyRef Name="aircraft_code" />
+            </Principal>
+            <Dependent Role="Flights">
+              <PropertyRef Name="aircraft_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flights_Airports">
+          <End Role="Airports" Type="Self.Airports" Multiplicity="1" />
+          <End Role="Flights" Type="Self.Flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airports">
+              <PropertyRef Name="airport_code" />
+            </Principal>
+            <Dependent Role="Flights">
+              <PropertyRef Name="airport_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seats_Aircrafts">
+          <End Role="Aircrafts" Type="Self.Aircrafts" Multiplicity="1" />
+          <End Role="Seats" Type="Self.Seats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Aircrafts">
+              <PropertyRef Name="aircraft_code" />
+            </Principal>
+            <Dependent Role="Seats">
+              <PropertyRef Name="aircraft_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_flights_Flights">
+          <End Role="Flights" Type="Self.Flights" Multiplicity="1" />
+          <End Role="Ticket_flights" Type="Self.Ticket_flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flights">
+              <PropertyRef Name="flight_id" />
+            </Principal>
+            <Dependent Role="Ticket_flights">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_flights_Tickets">
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
+          <End Role="Ticket_flights" Type="Self.Ticket_flights" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Tickets">
+              <PropertyRef Name="ticket_no" />
+            </Principal>
+            <Dependent Role="Ticket_flights">
+              <PropertyRef Name="ticket_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tickets_Bookings">
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bookings">
+              <PropertyRef Name="book_ref" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="book_ref" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tickets_Passenger">
+          <End Role="Passenger" Type="Self.Passenger" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passenger">
+              <PropertyRef Name="passenger_id" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="passenger_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ip126ModelContainer">
+          <EntitySet Name="Aircrafts" EntityType="Self.Aircrafts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Airports" EntityType="Self.Airports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Boardiang_passes" EntityType="Self.Boardiang_passes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Flights" EntityType="Self.Flights" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Passenger" EntityType="Self.Passenger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seats" EntityType="Self.Seats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ticket_flights" EntityType="Self.Ticket_flights" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Boardiang_passes_Seats" Association="Self.FK_Boardiang_passes_Seats">
+            <End Role="Seats" EntitySet="Seats" />
+            <End Role="Boardiang_passes" EntitySet="Boardiang_passes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flights_Aircrafts" Association="Self.FK_Flights_Aircrafts">
+            <End Role="Aircrafts" EntitySet="Aircrafts" />
+            <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flights_Airports" Association="Self.FK_Flights_Airports">
+            <End Role="Airports" EntitySet="Airports" />
+            <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seats_Aircrafts" Association="Self.FK_Seats_Aircrafts">
+            <End Role="Aircrafts" EntitySet="Aircrafts" />
+            <End Role="Seats" EntitySet="Seats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_flights_Flights" Association="Self.FK_Ticket_flights_Flights">
+            <End Role="Flights" EntitySet="Flights" />
+            <End Role="Ticket_flights" EntitySet="Ticket_flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_flights_Tickets" Association="Self.FK_Ticket_flights_Tickets">
+            <End Role="Tickets" EntitySet="Tickets" />
+            <End Role="Ticket_flights" EntitySet="Ticket_flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Bookings" Association="Self.FK_Tickets_Bookings">
+            <End Role="Bookings" EntitySet="Bookings" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Passenger" Association="Self.FK_Tickets_Passenger">
+            <End Role="Passenger" EntitySet="Passenger" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ip126Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Aircrafts">
+          <Key>
+            <PropertyRef Name="aircraft_code" />
+          </Key>
+          <Property Name="aircraft_code" Type="Int32" Nullable="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="range" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK_Flights_Aircrafts" FromRole="Aircrafts" ToRole="Flights" />
+          <NavigationProperty Name="Seats" Relationship="Self.FK_Seats_Aircrafts" FromRole="Aircrafts" ToRole="Seats" />
+        </EntityType>
+        <EntityType Name="Airports">
+          <Key>
+            <PropertyRef Name="airport_code" />
+          </Key>
+          <Property Name="airport_code" Type="Int32" Nullable="false" />
+          <Property Name="airport_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="coordinates" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="timezone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK_Flights_Airports" FromRole="Airports" ToRole="Flights" />
+        </EntityType>
+        <EntityType Name="Boardiang_passes">
+          <Key>
+            <PropertyRef Name="boarding_no" />
+          </Key>
+          <Property Name="ticket_no" Type="Int32" Nullable="false" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="boarding_no" Type="Int32" Nullable="false" />
+          <Property Name="seat_no" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Seats1" Relationship="ip126Model.FK_Boardiang_passes_Seats1" FromRole="Boardiang_passes" ToRole="Seats" />
+        </EntityType>
+        <EntityType Name="Bookings">
+          <Key>
+            <PropertyRef Name="book_ref" />
+          </Key>
+          <Property Name="book_ref" Type="Int32" Nullable="false" />
+          <Property Name="book_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="total_amount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tickets" Relationship="Self.FK_Tickets_Bookings" FromRole="Bookings" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="Flights">
+          <Key>
+            <PropertyRef Name="flight_id" />
+          </Key>
+          <Property Name="flight_id" Type="Int32" Nullable="false" />
+          <Property Name="flight_no" Type="Int32" Nullable="false" />
+          <Property Name="scheduled_departure" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="scheduled_arrival" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="departure_airport" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="arrival_airport" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="aircraft_code" Type="Int32" Nullable="false" />
+          <Property Name="actual_departure" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="actual_arrival" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="airport_code" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Aircrafts" Relationship="Self.FK_Flights_Aircrafts" FromRole="Flights" ToRole="Aircrafts" />
+          <NavigationProperty Name="Airports" Relationship="Self.FK_Flights_Airports" FromRole="Flights" ToRole="Airports" />
+          <NavigationProperty Name="Ticket_flights" Relationship="Self.FK_Ticket_flights_Flights" FromRole="Flights" ToRole="Ticket_flights" />
+        </EntityType>
+        <EntityType Name="Passenger">
+          <Key>
+            <PropertyRef Name="passenger_id" />
+          </Key>
+          <Property Name="passenger_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="passenger_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="passport" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dob" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Tickets" Relationship="Self.FK_Tickets_Passenger" FromRole="Passenger" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="Seats">
+          <Key>
+            <PropertyRef Name="seat_no" />
+          </Key>
+          <Property Name="aircraft_code" Type="Int32" Nullable="false" />
+          <Property Name="seat_no" Type="Int32" Nullable="false" />
+          <Property Name="fare_conditions" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Aircrafts" Relationship="Self.FK_Seats_Aircrafts" FromRole="Seats" ToRole="Aircrafts" />
+          <NavigationProperty Name="Boardiang_passes1" Relationship="ip126Model.FK_Boardiang_passes_Seats1" FromRole="Seats" ToRole="Boardiang_passes" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Ticket_flights">
+          <Key>
+            <PropertyRef Name="ticket_no" />
+          </Key>
+          <Property Name="ticket_no" Type="Int32" Nullable="false" />
+          <Property Name="flight_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fare_conditions" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK_Ticket_flights_Flights" FromRole="Ticket_flights" ToRole="Flights" />
+          <NavigationProperty Name="Tickets" Relationship="Self.FK_Ticket_flights_Tickets" FromRole="Ticket_flights" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="Tickets">
+          <Key>
+            <PropertyRef Name="ticket_no" />
+          </Key>
+          <Property Name="ticket_no" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="book_ref" Type="Int32" Nullable="false" />
+          <Property Name="passenger_id" Type="Int32" Nullable="false" />
+          <Property Name="contact_data" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK_Tickets_Bookings" FromRole="Tickets" ToRole="Bookings" />
+          <NavigationProperty Name="Passenger" Relationship="Self.FK_Tickets_Passenger" FromRole="Tickets" ToRole="Passenger" />
+          <NavigationProperty Name="Ticket_flights" Relationship="Self.FK_Ticket_flights_Tickets" FromRole="Tickets" ToRole="Ticket_flights" />
+        </EntityType>
+        <Association Name="FK_Flights_Aircrafts">
+          <End Role="Aircrafts" Type="Self.Aircrafts" Multiplicity="1" />
+          <End Role="Flights" Type="Self.Flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Aircrafts">
+              <PropertyRef Name="aircraft_code" />
+            </Principal>
+            <Dependent Role="Flights">
+              <PropertyRef Name="aircraft_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seats_Aircrafts">
+          <End Role="Aircrafts" Type="Self.Aircrafts" Multiplicity="1" />
+          <End Role="Seats" Type="Self.Seats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Aircrafts">
+              <PropertyRef Name="aircraft_code" />
+            </Principal>
+            <Dependent Role="Seats">
+              <PropertyRef Name="aircraft_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Flights_Airports">
+          <End Role="Airports" Type="Self.Airports" Multiplicity="1" />
+          <End Role="Flights" Type="Self.Flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airports">
+              <PropertyRef Name="airport_code" />
+            </Principal>
+            <Dependent Role="Flights">
+              <PropertyRef Name="airport_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tickets_Bookings">
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bookings">
+              <PropertyRef Name="book_ref" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="book_ref" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_flights_Flights">
+          <End Role="Flights" Type="Self.Flights" Multiplicity="1" />
+          <End Role="Ticket_flights" Type="Self.Ticket_flights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Flights">
+              <PropertyRef Name="flight_id" />
+            </Principal>
+            <Dependent Role="Ticket_flights">
+              <PropertyRef Name="flight_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tickets_Passenger">
+          <End Role="Passenger" Type="Self.Passenger" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passenger">
+              <PropertyRef Name="passenger_id" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="passenger_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_flights_Tickets">
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
+          <End Role="Ticket_flights" Type="Self.Ticket_flights" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Tickets">
+              <PropertyRef Name="ticket_no" />
+            </Principal>
+            <Dependent Role="Ticket_flights">
+              <PropertyRef Name="ticket_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Aircrafts" EntityType="Self.Aircrafts" />
+          <EntitySet Name="Airports" EntityType="Self.Airports" />
+          <EntitySet Name="Boardiang_passes" EntityType="Self.Boardiang_passes" />
+          <EntitySet Name="Bookings" EntityType="Self.Bookings" />
+          <EntitySet Name="Flights" EntityType="Self.Flights" />
+          <EntitySet Name="Passenger" EntityType="Self.Passenger" />
+          <EntitySet Name="Seats" EntityType="Self.Seats" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Ticket_flights" EntityType="Self.Ticket_flights" />
+          <EntitySet Name="Tickets" EntityType="Self.Tickets" />
+          <AssociationSet Name="FK_Flights_Aircrafts" Association="Self.FK_Flights_Aircrafts">
+            <End Role="Aircrafts" EntitySet="Aircrafts" />
+            <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seats_Aircrafts" Association="Self.FK_Seats_Aircrafts">
+            <End Role="Aircrafts" EntitySet="Aircrafts" />
+            <End Role="Seats" EntitySet="Seats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Flights_Airports" Association="Self.FK_Flights_Airports">
+            <End Role="Airports" EntitySet="Airports" />
+            <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Bookings" Association="Self.FK_Tickets_Bookings">
+            <End Role="Bookings" EntitySet="Bookings" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_flights_Flights" Association="Self.FK_Ticket_flights_Flights">
+            <End Role="Flights" EntitySet="Flights" />
+            <End Role="Ticket_flights" EntitySet="Ticket_flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Passenger" Association="Self.FK_Tickets_Passenger">
+            <End Role="Passenger" EntitySet="Passenger" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_flights_Tickets" Association="Self.FK_Ticket_flights_Tickets">
+            <End Role="Tickets" EntitySet="Tickets" />
+            <End Role="Ticket_flights" EntitySet="Ticket_flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Boardiang_passes_Seats1" Association="ip126Model.FK_Boardiang_passes_Seats1">
+            <End Role="Seats" EntitySet="Seats" />
+            <End Role="Boardiang_passes" EntitySet="Boardiang_passes" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Boardiang_passes_Seats1">
+          <End Type="ip126Model.Seats" Role="Seats" Multiplicity="1" />
+          <End Type="ip126Model.Boardiang_passes" Role="Boardiang_passes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seats">
+              <PropertyRef Name="seat_no" />
+            </Principal>
+            <Dependent Role="Boardiang_passes">
+              <PropertyRef Name="seat_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ip126ModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Aircrafts">
+            <EntityTypeMapping TypeName="ip126Model.Aircrafts">
+              <MappingFragment StoreEntitySet="Aircrafts">
+                <ScalarProperty Name="aircraft_code" ColumnName="aircraft_code" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="range" ColumnName="range" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Airports">
+            <EntityTypeMapping TypeName="ip126Model.Airports">
+              <MappingFragment StoreEntitySet="Airports">
+                <ScalarProperty Name="airport_code" ColumnName="airport_code" />
+                <ScalarProperty Name="airport_name" ColumnName="airport_name" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="coordinates" ColumnName="coordinates" />
+                <ScalarProperty Name="timezone" ColumnName="timezone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Boardiang_passes">
+            <EntityTypeMapping TypeName="ip126Model.Boardiang_passes">
+              <MappingFragment StoreEntitySet="Boardiang_passes">
+                <ScalarProperty Name="ticket_no" ColumnName="ticket_no" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="boarding_no" ColumnName="boarding_no" />
+                <ScalarProperty Name="seat_no" ColumnName="seat_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bookings">
+            <EntityTypeMapping TypeName="ip126Model.Bookings">
+              <MappingFragment StoreEntitySet="Bookings">
+                <ScalarProperty Name="book_ref" ColumnName="book_ref" />
+                <ScalarProperty Name="book_date" ColumnName="book_date" />
+                <ScalarProperty Name="total_amount" ColumnName="total_amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Flights">
+            <EntityTypeMapping TypeName="ip126Model.Flights">
+              <MappingFragment StoreEntitySet="Flights">
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="flight_no" ColumnName="flight_no" />
+                <ScalarProperty Name="scheduled_departure" ColumnName="scheduled_departure" />
+                <ScalarProperty Name="scheduled_arrival" ColumnName="scheduled_arrival" />
+                <ScalarProperty Name="departure_airport" ColumnName="departure_airport" />
+                <ScalarProperty Name="arrival_airport" ColumnName="arrival_airport" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="aircraft_code" ColumnName="aircraft_code" />
+                <ScalarProperty Name="actual_departure" ColumnName="actual_departure" />
+                <ScalarProperty Name="actual_arrival" ColumnName="actual_arrival" />
+                <ScalarProperty Name="airport_code" ColumnName="airport_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Passenger">
+            <EntityTypeMapping TypeName="ip126Model.Passenger">
+              <MappingFragment StoreEntitySet="Passenger">
+                <ScalarProperty Name="passenger_id" ColumnName="passenger_id" />
+                <ScalarProperty Name="passenger_name" ColumnName="passenger_name" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="passport" ColumnName="passport" />
+                <ScalarProperty Name="dob" ColumnName="dob" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seats">
+            <EntityTypeMapping TypeName="ip126Model.Seats">
+              <MappingFragment StoreEntitySet="Seats">
+                <ScalarProperty Name="aircraft_code" ColumnName="aircraft_code" />
+                <ScalarProperty Name="seat_no" ColumnName="seat_no" />
+                <ScalarProperty Name="fare_conditions" ColumnName="fare_conditions" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ip126Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ticket_flights">
+            <EntityTypeMapping TypeName="ip126Model.Ticket_flights">
+              <MappingFragment StoreEntitySet="Ticket_flights">
+                <ScalarProperty Name="ticket_no" ColumnName="ticket_no" />
+                <ScalarProperty Name="flight_id" ColumnName="flight_id" />
+                <ScalarProperty Name="fare_conditions" ColumnName="fare_conditions" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="ip126Model.Tickets">
+              <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="ticket_no" ColumnName="ticket_no" />
+                <ScalarProperty Name="book_ref" ColumnName="book_ref" />
+                <ScalarProperty Name="passenger_id" ColumnName="passenger_id" />
+                <ScalarProperty Name="contact_data" ColumnName="contact_data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
