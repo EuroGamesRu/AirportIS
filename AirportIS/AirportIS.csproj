@@ -91,13 +91,13 @@
     <Compile Include="Seats.cs">
       <DependentUpon>BD.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>BD.tt</DependentUpon>
-    </Compile>
     <Compile Include="Tickets.cs">
       <DependentUpon>BD.tt</DependentUpon>
     </Compile>
     <Compile Include="Ticket_flights.cs">
+      <DependentUpon>BD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Users.cs">
       <DependentUpon>BD.tt</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">

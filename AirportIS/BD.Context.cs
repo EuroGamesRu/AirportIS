@@ -32,8 +32,8 @@ namespace AirportIS
         public virtual DbSet<Flights> Flights { get; set; }
         public virtual DbSet<Passenger> Passenger { get; set; }
         public virtual DbSet<Seats> Seats { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Ticket_flights> Ticket_flights { get; set; }
         public virtual DbSet<Tickets> Tickets { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
     }
 }

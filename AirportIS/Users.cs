@@ -12,12 +12,11 @@ namespace AirportIS
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class Users
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public string Login { get; set; }
+        public string password { get; set; }
+        public string role { get; set; }
+        public int id { get; set; }
     }
 }
