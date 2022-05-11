@@ -632,6 +632,27 @@
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams></Diagrams>
+    <Diagrams>
+      <Diagram DiagramId="8b1aa2436a874a64a64877f64b679171" Name="Diagram1">
+        <EntityTypeShape EntityType="ip126Model.Aircrafts" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Airports" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Boardiang_passes" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Bookings" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Flights" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Passenger" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Seats" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Ticket_flights" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Tickets" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ip126Model.Users" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="ip126Model.FK_Flights_Aircrafts" ManuallyRouted="false" />
+        <AssociationConnector Association="ip126Model.FK_Seats_Aircrafts" ManuallyRouted="false" />
+        <AssociationConnector Association="ip126Model.FK_Flights_Airports" ManuallyRouted="false" />
+        <AssociationConnector Association="ip126Model.FK_Tickets_Bookings" ManuallyRouted="false" />
+        <AssociationConnector Association="ip126Model.FK_Ticket_flights_Flights" ManuallyRouted="false" />
+        <AssociationConnector Association="ip126Model.FK_Tickets_Passenger" ManuallyRouted="false" />
+        <AssociationConnector Association="ip126Model.FK_Ticket_flights_Tickets" ManuallyRouted="false" />
+        <AssociationConnector Association="ip126Model.FK_Boardiang_passes_Seats1" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
   </Designer>
 </edmx:Edmx>

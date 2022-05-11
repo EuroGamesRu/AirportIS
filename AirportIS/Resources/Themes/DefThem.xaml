@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:AirportIS.Resources.Themes">
+
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#DD6B20"/>
+        <Setter Property="Margin" Value="15"/>
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="#DD6B20"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style TargetType="{x:Type Label}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
+</ResourceDictionary>
