@@ -8,11 +8,11 @@ namespace AirportIS
 {
     class DataBase
     {
-        private static Entities _context;
-        public static Entities GetContext()
+        private static Entities1 _context;
+        public static Entities1 GetContext()
         {
             if (_context == null)
-                _context = new Entities();
+                _context = new Entities1();
             return _context;
         }
     }

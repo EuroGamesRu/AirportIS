@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище ip126Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище AIRModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Aircrafts">
           <Key>
             <PropertyRef Name="aircraft_code" />
@@ -22,6 +22,7 @@
           <Property Name="city" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="coordinates" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="timezone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="image" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Boardiang_passes">
           <Key>
@@ -64,6 +65,7 @@
           <Property Name="passenger_name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="passport" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="dob" Type="date" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Seats">
           <Key>
@@ -95,10 +97,11 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="role" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="image" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Boardiang_passes_Seats">
           <End Role="Seats" Type="Self.Seats" Multiplicity="1" />
@@ -136,6 +139,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Passenger_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Passenger" Type="Self.Passenger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Passenger">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Seats_Aircrafts">
           <End Role="Aircrafts" Type="Self.Aircrafts" Multiplicity="1" />
           <End Role="Seats" Type="Self.Seats" Multiplicity="*" />
@@ -196,7 +211,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище ip126ModelContainer">
+        <EntityContainer Name="Хранилище AIRModelContainer">
           <EntitySet Name="Aircrafts" EntityType="Self.Aircrafts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Airports" EntityType="Self.Airports" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Boardiang_passes" EntityType="Self.Boardiang_passes" Schema="dbo" store:Type="Tables" />
@@ -218,6 +233,10 @@
           <AssociationSet Name="FK_Flights_Airports" Association="Self.FK_Flights_Airports">
             <End Role="Airports" EntitySet="Airports" />
             <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Passenger_Users" Association="Self.FK_Passenger_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Passenger" EntitySet="Passenger" />
           </AssociationSet>
           <AssociationSet Name="FK_Seats_Aircrafts" Association="Self.FK_Seats_Aircrafts">
             <End Role="Aircrafts" EntitySet="Aircrafts" />
@@ -243,7 +262,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ip126Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="AIRModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Aircrafts">
           <Key>
             <PropertyRef Name="aircraft_code" />
@@ -264,6 +283,7 @@
           <Property Name="coordinates" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="timezone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Flights" Relationship="Self.FK_Flights_Airports" FromRole="Airports" ToRole="Flights" />
+          <Property Name="image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Boardiang_passes">
           <Key>
@@ -273,7 +293,7 @@
           <Property Name="flight_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="boarding_no" Type="Int32" Nullable="false" />
           <Property Name="seat_no" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Seats1" Relationship="ip126Model.FK_Boardiang_passes_Seats1" FromRole="Boardiang_passes" ToRole="Seats" />
+          <NavigationProperty Name="Seats" Relationship="Self.FK_Boardiang_passes_Seats" FromRole="Boardiang_passes" ToRole="Seats" />
         </EntityType>
         <EntityType Name="Bookings">
           <Key>
@@ -309,11 +329,11 @@
           </Key>
           <Property Name="passenger_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="passenger_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="passport" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="dob" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Tickets_Passenger" FromRole="Passenger" ToRole="Tickets" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="AIRModel.FK_Passenger_Users" FromRole="Passenger" ToRole="Users" />
         </EntityType>
         <EntityType Name="Seats">
           <Key>
@@ -323,7 +343,7 @@
           <Property Name="seat_no" Type="Int32" Nullable="false" />
           <Property Name="fare_conditions" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Aircrafts" Relationship="Self.FK_Seats_Aircrafts" FromRole="Seats" ToRole="Aircrafts" />
-          <NavigationProperty Name="Boardiang_passes1" Relationship="ip126Model.FK_Boardiang_passes_Seats1" FromRole="Seats" ToRole="Boardiang_passes" />
+          <NavigationProperty Name="Boardiang_passes" Relationship="Self.FK_Boardiang_passes_Seats" FromRole="Seats" ToRole="Boardiang_passes" />
         </EntityType>
         <EntityType Name="Ticket_flights">
           <Key>
@@ -347,6 +367,17 @@
           <NavigationProperty Name="Bookings" Relationship="Self.FK_Tickets_Bookings" FromRole="Tickets" ToRole="Bookings" />
           <NavigationProperty Name="Passenger" Relationship="Self.FK_Tickets_Passenger" FromRole="Tickets" ToRole="Passenger" />
           <NavigationProperty Name="Ticket_flights" Relationship="Self.FK_Ticket_flights_Tickets" FromRole="Tickets" ToRole="Ticket_flights" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Passenger" Relationship="AIRModel.FK_Passenger_Users" FromRole="Users" ToRole="Passenger" />
+          <Property Name="image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Flights_Aircrafts">
           <End Role="Aircrafts" Type="Self.Aircrafts" Multiplicity="1" />
@@ -384,6 +415,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Boardiang_passes_Seats">
+          <End Role="Seats" Type="Self.Seats" Multiplicity="1" />
+          <End Role="Boardiang_passes" Type="Self.Boardiang_passes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seats">
+              <PropertyRef Name="seat_no" />
+            </Principal>
+            <Dependent Role="Boardiang_passes">
+              <PropertyRef Name="seat_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Tickets_Bookings">
           <End Role="Bookings" Type="Self.Bookings" Multiplicity="1" />
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
@@ -432,7 +475,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Aircrafts" EntityType="Self.Aircrafts" />
           <EntitySet Name="Airports" EntityType="Self.Airports" />
           <EntitySet Name="Boardiang_passes" EntityType="Self.Boardiang_passes" />
@@ -442,6 +485,7 @@
           <EntitySet Name="Seats" EntityType="Self.Seats" />
           <EntitySet Name="Ticket_flights" EntityType="Self.Ticket_flights" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK_Flights_Aircrafts" Association="Self.FK_Flights_Aircrafts">
             <End Role="Aircrafts" EntitySet="Aircrafts" />
             <End Role="Flights" EntitySet="Flights" />
@@ -453,6 +497,10 @@
           <AssociationSet Name="FK_Flights_Airports" Association="Self.FK_Flights_Airports">
             <End Role="Airports" EntitySet="Airports" />
             <End Role="Flights" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Boardiang_passes_Seats" Association="Self.FK_Boardiang_passes_Seats">
+            <End Role="Seats" EntitySet="Seats" />
+            <End Role="Boardiang_passes" EntitySet="Boardiang_passes" />
           </AssociationSet>
           <AssociationSet Name="FK_Tickets_Bookings" Association="Self.FK_Tickets_Bookings">
             <End Role="Bookings" EntitySet="Bookings" />
@@ -470,44 +518,31 @@
             <End Role="Tickets" EntitySet="Tickets" />
             <End Role="Ticket_flights" EntitySet="Ticket_flights" />
           </AssociationSet>
-          <AssociationSet Name="FK_Boardiang_passes_Seats1" Association="ip126Model.FK_Boardiang_passes_Seats1">
-            <End Role="Seats" EntitySet="Seats" />
-            <End Role="Boardiang_passes" EntitySet="Boardiang_passes" />
+          <AssociationSet Name="FK_Passenger_Users" Association="AIRModel.FK_Passenger_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Passenger" EntitySet="Passenger" />
           </AssociationSet>
-          <EntitySet Name="Users" EntityType="ip126Model.Users" />
         </EntityContainer>
-        <Association Name="FK_Boardiang_passes_Seats1">
-          <End Type="ip126Model.Seats" Role="Seats" Multiplicity="1" />
-          <End Type="ip126Model.Boardiang_passes" Role="Boardiang_passes" Multiplicity="*" />
+        <Association Name="FK_Passenger_Users">
+          <End Type="AIRModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="AIRModel.Passenger" Role="Passenger" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Seats">
-              <PropertyRef Name="seat_no" />
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="Boardiang_passes">
-              <PropertyRef Name="seat_no" />
+            <Dependent Role="Passenger">
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="Login" />
-            <PropertyRef Name="password" />
-            <PropertyRef Name="role" />
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="Login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище ip126ModelContainer" CdmEntityContainer="Entities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище AIRModelContainer" CdmEntityContainer="Entities1">
           <EntitySetMapping Name="Aircrafts">
-            <EntityTypeMapping TypeName="ip126Model.Aircrafts">
+            <EntityTypeMapping TypeName="AIRModel.Aircrafts">
               <MappingFragment StoreEntitySet="Aircrafts">
                 <ScalarProperty Name="aircraft_code" ColumnName="aircraft_code" />
                 <ScalarProperty Name="model" ColumnName="model" />
@@ -516,8 +551,9 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Airports">
-            <EntityTypeMapping TypeName="ip126Model.Airports">
+            <EntityTypeMapping TypeName="AIRModel.Airports">
               <MappingFragment StoreEntitySet="Airports">
+                <ScalarProperty Name="image" ColumnName="image" />
                 <ScalarProperty Name="airport_code" ColumnName="airport_code" />
                 <ScalarProperty Name="airport_name" ColumnName="airport_name" />
                 <ScalarProperty Name="city" ColumnName="city" />
@@ -527,7 +563,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Boardiang_passes">
-            <EntityTypeMapping TypeName="ip126Model.Boardiang_passes">
+            <EntityTypeMapping TypeName="AIRModel.Boardiang_passes">
               <MappingFragment StoreEntitySet="Boardiang_passes">
                 <ScalarProperty Name="ticket_no" ColumnName="ticket_no" />
                 <ScalarProperty Name="flight_id" ColumnName="flight_id" />
@@ -537,7 +573,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Bookings">
-            <EntityTypeMapping TypeName="ip126Model.Bookings">
+            <EntityTypeMapping TypeName="AIRModel.Bookings">
               <MappingFragment StoreEntitySet="Bookings">
                 <ScalarProperty Name="book_ref" ColumnName="book_ref" />
                 <ScalarProperty Name="book_date" ColumnName="book_date" />
@@ -546,7 +582,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Flights">
-            <EntityTypeMapping TypeName="ip126Model.Flights">
+            <EntityTypeMapping TypeName="AIRModel.Flights">
               <MappingFragment StoreEntitySet="Flights">
                 <ScalarProperty Name="flight_id" ColumnName="flight_id" />
                 <ScalarProperty Name="flight_no" ColumnName="flight_no" />
@@ -563,8 +599,9 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Passenger">
-            <EntityTypeMapping TypeName="ip126Model.Passenger">
+            <EntityTypeMapping TypeName="AIRModel.Passenger">
               <MappingFragment StoreEntitySet="Passenger">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="passenger_id" ColumnName="passenger_id" />
                 <ScalarProperty Name="passenger_name" ColumnName="passenger_name" />
                 <ScalarProperty Name="passport" ColumnName="passport" />
@@ -573,7 +610,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Seats">
-            <EntityTypeMapping TypeName="ip126Model.Seats">
+            <EntityTypeMapping TypeName="AIRModel.Seats">
               <MappingFragment StoreEntitySet="Seats">
                 <ScalarProperty Name="aircraft_code" ColumnName="aircraft_code" />
                 <ScalarProperty Name="seat_no" ColumnName="seat_no" />
@@ -582,7 +619,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Ticket_flights">
-            <EntityTypeMapping TypeName="ip126Model.Ticket_flights">
+            <EntityTypeMapping TypeName="AIRModel.Ticket_flights">
               <MappingFragment StoreEntitySet="Ticket_flights">
                 <ScalarProperty Name="ticket_no" ColumnName="ticket_no" />
                 <ScalarProperty Name="flight_id" ColumnName="flight_id" />
@@ -592,7 +629,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tickets">
-            <EntityTypeMapping TypeName="ip126Model.Tickets">
+            <EntityTypeMapping TypeName="AIRModel.Tickets">
               <MappingFragment StoreEntitySet="Tickets">
                 <ScalarProperty Name="ticket_no" ColumnName="ticket_no" />
                 <ScalarProperty Name="book_ref" ColumnName="book_ref" />
@@ -602,12 +639,13 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="ip126Model.Users">
+            <EntityTypeMapping TypeName="AIRModel.Users">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="image" ColumnName="image" />
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="role" ColumnName="role" />
-                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role" ColumnName="role" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -632,27 +670,6 @@
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams>
-      <Diagram DiagramId="8b1aa2436a874a64a64877f64b679171" Name="Diagram1">
-        <EntityTypeShape EntityType="ip126Model.Aircrafts" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Airports" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Boardiang_passes" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Bookings" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Flights" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Passenger" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Seats" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Ticket_flights" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Tickets" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="ip126Model.Users" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="ip126Model.FK_Flights_Aircrafts" ManuallyRouted="false" />
-        <AssociationConnector Association="ip126Model.FK_Seats_Aircrafts" ManuallyRouted="false" />
-        <AssociationConnector Association="ip126Model.FK_Flights_Airports" ManuallyRouted="false" />
-        <AssociationConnector Association="ip126Model.FK_Tickets_Bookings" ManuallyRouted="false" />
-        <AssociationConnector Association="ip126Model.FK_Ticket_flights_Flights" ManuallyRouted="false" />
-        <AssociationConnector Association="ip126Model.FK_Tickets_Passenger" ManuallyRouted="false" />
-        <AssociationConnector Association="ip126Model.FK_Ticket_flights_Tickets" ManuallyRouted="false" />
-        <AssociationConnector Association="ip126Model.FK_Boardiang_passes_Seats1" ManuallyRouted="false" />
-      </Diagram>
-    </Diagrams>
+    <Diagrams></Diagrams>
   </Designer>
 </edmx:Edmx>
